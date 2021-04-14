@@ -6,25 +6,18 @@ data "ibm_is_ssh_key" "ssh_key" {
 }
 
 locals {
-  tags     = []
-  image_id = data.ibm_is_image.ubuntu.id
-  user     = "root"
-  keys     = [data.ibm_is_ssh_key.ssh_key.id]
-  name     = var.basename
-  cidr     = "10.0.0.0/8"
-  capacity = 10
+  tags           = []
+  image_id       = data.ibm_is_image.ubuntu.id
+  user           = "root"
+  keys           = [data.ibm_is_ssh_key.ssh_key.id]
+  name           = var.basename
+  big_cidr       = "10.0.0.0/8"
+  capacity       = 10
   resource_group = data.ibm_resource_group.group
-  encryption_key =  ibm_kp_key.key_protect.crn
-  subnets = {
-    0 = {
-      zone = "${var.region}-1"
-      cidr = cidrsubnet(local.cidr, 8, 0)
-      create_instance = true
-    }
-  }
-  instances = {
-    for key, subnet in local.subnets: key => ibm_is_subnet.mains[key] if subnet.create_instance
-  }
+  encryption_key = ibm_kp_key.key_protect.crn
+  # encryption_key =  "crn:v1:bluemix:public:kms:au-syd:a/713c783d9a507a53135fe6793c37cc74:9e6c26f1-a4b9-4a9c-9a2c-bf5d84cfba4c:key:25abfd00-7d50-4556-b489-c96bc5ac130e"
+  zone = "${var.region}-1"
+  cidr = cidrsubnet(local.big_cidr, 8, 0)
 }
 
 data "ibm_resource_group" "group" {
@@ -38,44 +31,41 @@ resource "ibm_is_vpc" "main" {
   tags                      = local.tags
 }
 resource "ibm_is_vpc_address_prefix" "prefixes" {
-  for_each = local.subnets
-  name     = "${local.name}-${each.key}"
-  zone     = each.value.zone
-  vpc      = ibm_is_vpc.main.id
-  cidr     = each.value.cidr
+  name = local.name
+  zone = local.zone
+  vpc  = ibm_is_vpc.main.id
+  cidr = local.cidr
 }
 resource "ibm_is_subnet" "mains" {
-  for_each        = local.subnets
-  name            = ibm_is_vpc_address_prefix.prefixes[each.key].name # need a dependency on address prefix
+  name            = ibm_is_vpc_address_prefix.prefixes.name # need a dependency on address prefix
   vpc             = ibm_is_vpc.main.id
-  zone            = each.value.zone
-  ipv4_cidr_block = each.value.cidr
+  zone            = local.zone
+  ipv4_cidr_block = local.cidr
   resource_group  = local.resource_group.id
 }
 
 resource "ibm_is_volume" "mains" {
-  for_each = local.instances
-  name     = "${each.value.name}-data"
-  profile  = "10iops-tier"
-  zone     = each.value.zone
-  encryption_key =  local.encryption_key
-  capacity = local.capacity
+  # depends_on = [ibm_iam_authorization_policy.policy]
+  name           = local.name
+  profile        = "10iops-tier"
+  zone           = local.zone
+  encryption_key = local.encryption_key
+  capacity       = local.capacity
 }
 resource "ibm_is_instance" "mains" {
-  for_each = local.instances
-  name           = each.value.name
+  name           = local.name
   vpc            = ibm_is_vpc.main.id
-  zone           = each.value.zone
+  zone           = local.zone
   keys           = local.keys
   image          = local.image_id
   profile        = var.profile
   resource_group = local.resource_group.id
   primary_network_interface {
-    subnet = each.value.id
+    subnet = ibm_is_subnet.mains.id
   }
   boot_volume {
-    name = "${each.value.name}-boot"
+    name = "${local.name}-boot"
   }
-  volumes   = [ibm_is_volume.mains[each.key].id]
-  tags      = local.tags
+  volumes = [ibm_is_volume.mains.id]
+  tags    = local.tags
 }
