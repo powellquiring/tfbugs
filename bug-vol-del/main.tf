@@ -45,13 +45,17 @@ resource "ibm_is_subnet" "mains" {
 }
 
 resource "ibm_is_volume" "mains" {
-  # depends_on = [ibm_iam_authorization_policy.policy]
   name           = local.name
   profile        = "10iops-tier"
   zone           = local.zone
-  encryption_key = local.encryption_key
+  # [ibm_is_volume not tainted on encryption_key removal](https://github.com/IBM-Cloud/terraform-provider-ibm/issues/2500)
+  # apply
+  # comment out the line below
+  # apply again - expected this resource would be tainted
+  encryption_key = local.encryption_key # comment out this line after first appply
   capacity       = local.capacity
 }
+
 resource "ibm_is_instance" "mains" {
   name           = local.name
   vpc            = ibm_is_vpc.main.id

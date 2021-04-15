@@ -7,6 +7,10 @@ resource "ibm_resource_instance" "kp_data" {
 }
 
 resource "ibm_kp_key" "key_protect" {
+
+  # [volume stays in pending_deletion when IAM authorization is revoked before deleting](https://jiracloud.swg.usma.ibm.com:8443/browse/SC-1935)
+  depends_on = [ ibm_iam_authorization_policy.policy ] # comment this out to reproduce bug
+
   key_protect_id = ibm_resource_instance.kp_data.guid
   key_name       = "${local.name}-kp-data"
   standard_key   = false
