@@ -1,0 +1,5 @@
+local.env
+[._]*.sw[a-p]
+*.tfstate
+*.tfstate.backup
+.terraform*
