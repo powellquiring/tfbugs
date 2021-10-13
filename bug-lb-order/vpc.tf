@@ -107,11 +107,18 @@ resource "ibm_is_lb" "front" {
 }
 
 resource ibm_is_security_group_target load_balancer_targets_front {
+  depends_on = [
+    ibm_is_lb_pool.front,
+    ibm_is_lb_listener.front,
+    ibm_is_security_group_rule.load_balancer_targets_outbound.id,
+    ibm_is_security_group_rule.load_balancer_targets_inbound.id,
+  ]
   security_group = ibm_is_security_group.load_balancer_targets.id
   target = ibm_is_lb.front.id
 }
 
 
+/*-----------------------------------------------------------------
 resource "ibm_is_lb" "back" {
   name           = "${local.name}-back"
   subnets        = [for subnet in ibm_is_subnet.back : subnet.id]
@@ -123,6 +130,7 @@ resource ibm_is_security_group_target load_balancer_targets_back {
   security_group = ibm_is_security_group.load_balancer_targets.id
   target = ibm_is_lb.back.id
 }
+-----------------------------------------------------------------*/
 
 resource "ibm_is_security_group_rule" "inbound_8000" {
   group     = ibm_is_vpc.location.default_security_group

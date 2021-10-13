@@ -205,3 +205,127 @@ ibm_is_subnet.front["1"]: Destruction complete after 16s
 
 
 
+# More Analysis
+
+I added some depends on to force the security group to get deleted first, and was successful.  But the same failure.  There error message may be incorrect?
+
+```
+Plan: 0 to add, 0 to change, 11 to destroy.
+ibm_is_security_group_target.load_balancer_targets_front: Destroying... [id=r014-9676ae32-8af4-4d80-abce-3aea96e1f823/r014-07db8582-2d27-49ee-b3be-e885f31efdd6]
+ibm_is_security_group_target.load_balancer_targets_front: Destruction complete after 2s
+ibm_is_security_group.load_balancer_targets: Destroying... [id=r014-9676ae32-8af4-4d80-abce-3aea96e1f823]
+ibm_is_lb_listener.front: Destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6/r014-3d60817e-ffb6-4cd9-8718-2b28779c96d9]
+ibm_is_lb_listener.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-3d60817e-ffb6-4cd9-8718-2b28779c96d9, 10s elapsed]
+ibm_is_lb_listener.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-3d60817e-ffb6-4cd9-8718-2b28779c96d9, 20s elapsed]
+ibm_is_lb_listener.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-3d60817e-ffb6-4cd9-8718-2b28779c96d9, 30s elapsed]
+ibm_is_lb_listener.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-3d60817e-ffb6-4cd9-8718-2b28779c96d9, 40s elapsed]
+ibm_is_lb_listener.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-3d60817e-ffb6-4cd9-8718-2b28779c96d9, 50s elapsed]
+ibm_is_lb_listener.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-3d60817e-ffb6-4cd9-8718-2b28779c96d9, 1m0s elapsed]
+ibm_is_lb_listener.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-3d60817e-ffb6-4cd9-8718-2b28779c96d9, 1m10s elapsed]
+ibm_is_lb_listener.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-3d60817e-ffb6-4cd9-8718-2b28779c96d9, 1m20s elapsed]
+ibm_is_lb_listener.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-3d60817e-ffb6-4cd9-8718-2b28779c96d9, 1m30s elapsed]
+ibm_is_lb_listener.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-3d60817e-ffb6-4cd9-8718-2b28779c96d9, 1m40s elapsed]
+ibm_is_lb_listener.front: Destruction complete after 1m44s
+ibm_is_lb_pool.front: Destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6/r014-251bc649-7d1c-43a0-9927-da4dd997a369]
+ibm_is_lb_pool.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-251bc649-7d1c-43a0-9927-da4dd997a369, 10s elapsed]
+ibm_is_lb_pool.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-251bc649-7d1c-43a0-9927-da4dd997a369, 20s elapsed]
+ibm_is_lb_pool.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-251bc649-7d1c-43a0-9927-da4dd997a369, 30s elapsed]
+ibm_is_lb_pool.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efd...4-251bc649-7d1c-43a0-9927-da4dd997a369, 40s elapsed]
+ibm_is_lb_pool.front: Destruction complete after 44s
+ibm_is_lb.front: Destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 10s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 20s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 30s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 40s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 50s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 1m0s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 1m10s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 1m20s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 1m30s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 1m40s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 1m50s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 2m0s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 2m10s elapsed]
+ibm_is_lb.front: Still destroying... [id=r014-07db8582-2d27-49ee-b3be-e885f31efdd6, 2m20s elapsed]
+ibm_is_lb.front: Destruction complete after 2m22s
+ibm_is_subnet.front["0"]: Destroying... [id=0757-c0bce563-6f59-437d-b0d1-b1b7c6e14c61]
+ibm_is_subnet.front["1"]: Destroying... [id=0767-4d004241-c8bc-447b-985c-eab0639fafd7]
+ibm_is_subnet.front["1"]: Still destroying... [id=0767-4d004241-c8bc-447b-985c-eab0639fafd7, 10s elapsed]
+ibm_is_subnet.front["0"]: Still destroying... [id=0757-c0bce563-6f59-437d-b0d1-b1b7c6e14c61, 10s elapsed]
+ibm_is_subnet.front["1"]: Destruction complete after 15s
+ibm_is_subnet.front["0"]: Destruction complete after 16s
+ibm_is_vpc_address_prefix.locations["0"]: Destroying... [id=r014-18757ace-d40b-4d58-b0b0-c2751120a4ed/r014-50b24e21-afdc-417b-8c20-70d001abc9a4]
+ibm_is_vpc_address_prefix.locations["2"]: Destroying... [id=r014-18757ace-d40b-4d58-b0b0-c2751120a4ed/r014-cfd93c13-0ad3-442b-a88e-50c362e8b015]
+ibm_is_vpc_address_prefix.locations["1"]: Destroying... [id=r014-18757ace-d40b-4d58-b0b0-c2751120a4ed/r014-a6469d03-28fd-4a80-8ceb-b038031b372a]
+ibm_is_vpc_address_prefix.locations["0"]: Destruction complete after 1s
+ibm_is_vpc_address_prefix.locations["2"]: Destruction complete after 1s
+ibm_is_vpc_address_prefix.locations["1"]: Destruction complete after 2s
+╷
+│ Error: Error Deleting Security Group Targets : error communicating with LBaaS: The load balancer with ID 'r014-07db8582-2d27-49ee-b3be-e885f31efdd6' cannot be updated because its status is 'UPDATE_PENDING'.
+│ {
+│     "StatusCode": 409,
+│     "Headers": {
+│         "Cache-Control": [
+│             "max-age=0, no-cache, no-store, must-revalidate"
+│         ],
+│         "Cf-Cache-Status": [
+│             "DYNAMIC"
+│         ],
+│         "Cf-Ray": [
+│             "69dbf2e35dcfed57-SJC"
+│         ],
+│         "Content-Length": [
+│             "470"
+│         ],
+│         "Content-Type": [
+│             "application/json"
+│         ],
+│         "Date": [
+│             "Wed, 13 Oct 2021 22:19:19 GMT"
+│         ],
+│         "Expect-Ct": [
+│             "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\""
+│         ],
+│         "Expires": [
+│             "-1"
+│         ],
+│         "Pragma": [
+│             "no-cache"
+│         ],
+│         "Server": [
+│             "cloudflare"
+│         ],
+│         "Strict-Transport-Security": [
+│             "max-age=31536000; includeSubDomains"
+│         ],
+│         "Vary": [
+│             "Accept-Encoding"
+│         ],
+│         "X-Content-Type-Options": [
+│             "nosniff"
+│         ],
+│         "X-Request-Id": [
+│             "21b77902-19bc-4c90-b500-1c2cdfac26a8"
+│         ],
+│         "X-Xss-Protection": [
+│             "1; mode=block"
+│         ]
+│     },
+│     "Result": {
+│         "errors": [
+│             {
+│                 "code": "load_balancer_update_conflict",
+│                 "message": "error communicating with LBaaS: The load balancer with ID 'r014-07db8582-2d27-49ee-b3be-e885f31efdd6' cannot be updated because its status is 'UPDATE_PENDING'.",
+│                 "more_info": "https://cloud.ibm.com/docs/vpc?topic=vpc-rias-error-messagesload_balancer_update_conflict",
+│                 "target": {
+│                     "name": "id",
+│                     "type": "parameter",
+│                     "value": "r014-07db8582-2d27-49ee-b3be-e885f31efdd6"
+│                 }
+│             }
+│         ],
+│         "trace": "21b77902-19bc-4c90-b500-1c2cdfac26a8"
+│     },
+│     "RawResult": null
+│ }
+│```
