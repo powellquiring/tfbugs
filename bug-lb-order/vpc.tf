@@ -110,8 +110,8 @@ resource ibm_is_security_group_target load_balancer_targets_front {
   depends_on = [
     ibm_is_lb_pool.front,
     ibm_is_lb_listener.front,
-    ibm_is_security_group_rule.load_balancer_targets_outbound.id,
-    ibm_is_security_group_rule.load_balancer_targets_inbound.id,
+    ibm_is_security_group_rule.load_balancer_targets_outbound,
+    ibm_is_security_group_rule.load_balancer_targets_inbound,
   ]
   security_group = ibm_is_security_group.load_balancer_targets.id
   target = ibm_is_lb.front.id
