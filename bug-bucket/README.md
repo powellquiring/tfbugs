@@ -1,0 +1,1 @@
+- ibm_cos_bucket documented storge_class flex does not work|https://github.com/IBM-Cloud/terraform-provider-ibm/issues/3349
