@@ -1,0 +1,1 @@
+- ibm_iam_authorization_policy use of the target_resource_instance_id is not working as documented|https://github.com/IBM-Cloud/terraform-provider-ibm/issues/3348
